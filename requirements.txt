@@ -1,0 +1,11 @@
+Cython==0.29.26
+matplotlib==3.5.1
+networkx==2.6.3
+pydle==0.9.4
+sentence-transformers==2.2.0
+setuptools-rust==1.1.2
+torch==1.10.2
+torchvision==0.11.3
+tqdm==4.62.3
+transformers==4.16.2
+urlextract==1.5.0
