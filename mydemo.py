@@ -2,10 +2,13 @@ import argparse
 import os
 from typing import List
 import numpy as np
-
 from puppeteer import Agenda, Extractions, MessageObservation, Puppeteer
 from puppeteer.trigger_detectors.loader import MyTriggerDetectorLoader
+from utils import get_simple_sentences
 
+AGENDA_DIR = "puppeteer-control/agendas/"
+AGENDA_NAMES = ["get_shipment", "get_payment", "get_website"]
+NLU_DATA_DIR = "puppeteer-control/nlu_training_data/"
 
 class TestConversation:
     def __init__(self, agendas: List[Agenda]):
@@ -19,10 +22,12 @@ class TestConversation:
         print("-"*40)
         print("You said: %s" % text)
 
-        msg = MessageObservation(text)
-        if intent != None:
-            msg.add_intent(intent)
-        (actions, extractions) = self._puppeteer.react([msg], self._extractions)
+        msg = [MessageObservation(text)]
+        simple_sentences = get_simple_sentences(text)
+        # print(simple_sentences)
+        simple_msg = [MessageObservation(sent) for sent in simple_sentences]
+        msg += simple_msg
+        actions, extractions = self._puppeteer.react(msg, self._extractions)
 
         if actions:
             self._actions.append(actions)
@@ -76,12 +81,8 @@ def demo(args):
         txt = input('text: ')
         if txt == 'exit':
             break
-        
-        intent = input('intent (type \'NA\' to skip): ')
-        if intent != 'NA':
-            tc.say(txt, intent)
-        else:
-            tc.say(txt)
+
+        tc.say(txt)
 
     print("-"*60)
     print("ACTIONS")
@@ -96,12 +97,13 @@ def demo(args):
     print("-"*60)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Puppeteer demo",
-        fromfile_prefix_chars='@')
+    parser = argparse.ArgumentParser(description="Puppeteer demo")
     parser.add_argument("--agenda_dir", type=str, help='path to agenda directory')
     parser.add_argument("--agenda_names", nargs='+', type=str, help='list of agenda names')
     parser.add_argument("--nlu_data_dir", type=str, help='path to NLU training data directory')
     args = parser.parse_args()
+    args.agenda_dir = AGENDA_DIR
+    args.agenda_names = AGENDA_NAMES
+    args.nlu_data_dir = NLU_DATA_DIR
 
     demo(args)
