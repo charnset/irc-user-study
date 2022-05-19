@@ -1,18 +1,17 @@
 import re
-import string
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
 
 def get_simple_sentences(msg):
-	""" Split a massage by punctuations
+	""" Split a massage by punctuations ('.', ',', ':', ';')
 		if the split sentence is compound (FANBOYS: For, And, Nor, But, Or, Yet, So)
 		then segment it into multiple simple sentences
 		a simple sentence is a sequence of word in which 
 		its dependency tree contains at least one VERB token and one SUBJ token (nsubj, csubj)
 	"""
 	sentences = set()
-	split_msg = re.split("[" + string.punctuation + "]+", msg)
+	split_msg = re.split("[" + ".,:;" + "]+", msg)
 	split_msg = [s.strip().lower() for s in split_msg if s.strip()]
 	# print(split_msg)
 

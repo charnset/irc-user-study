@@ -7,7 +7,8 @@ from puppeteer.trigger_detectors.loader import MyTriggerDetectorLoader
 from utils import get_simple_sentences
 
 AGENDA_DIR = "puppeteer-control/agendas/"
-AGENDA_NAMES = ["get_shipment", "get_payment", "get_website"]
+# AGENDA_NAMES = ["get_shipment", "get_payment", "get_website"]
+AGENDA_NAMES = ["get_shipment", "get_payment"]
 NLU_DATA_DIR = "puppeteer-control/nlu_training_data/"
 
 class TestConversation:
