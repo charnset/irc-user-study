@@ -4,11 +4,13 @@ from typing import List
 import numpy as np
 from puppeteer import Agenda, Extractions, MessageObservation, Puppeteer
 from puppeteer.trigger_detectors.loader import MyTriggerDetectorLoader
-from utils import get_simple_sentences
 
-AGENDA_DIR = "puppeteer-control/agendas/"
-AGENDA_NAMES = ["get_shipment", "get_payment", "get_website"]
-NLU_DATA_DIR = "puppeteer-control/nlu_training_data/"
+#AGENDA_NAMES = ["get_shipment", "get_payment", "get_website"]
+AGENDA_NAMES = ["get_website"]
+DIR = "../ppt-control/"
+AGENDA_DIR = DIR + "agendas"
+NLI_DATA_DIR = DIR + "nli_premises"
+NLU_DATA_DIR = DIR + "nlu_training_data"
 
 class TestConversation:
     def __init__(self, agendas: List[Agenda]):
@@ -18,16 +20,21 @@ class TestConversation:
         self._extractions = Extractions()
         np.random.seed(0)
 
-    def say(self, text, intent=None):
+    def say(self, text):
         print("-"*40)
         print("You said: %s" % text)
 
-        msg = [MessageObservation(text)]
+        '''
+        msg = []
+        msg.append(MessageObservation(text))
         simple_sentences = get_simple_sentences(text)
         # print(simple_sentences)
-        simple_msg = [MessageObservation(sent) for sent in simple_sentences]
-        msg += simple_msg
+        for sent in simple_sentences:
+            msg.append(MessageObservation(sent))
         actions, extractions = self._puppeteer.react(msg, self._extractions)
+        '''
+
+        actions, extractions = self._puppeteer.react([MessageObservation(text)], self._extractions)
 
         if actions:
             self._actions.append(actions)
@@ -54,16 +61,19 @@ class TestConversation:
 def print_args(args):
     print("agenda_path: {}".format(args.agenda_dir))
     print("agendas: {}".format(str(args.agenda_names)))
-    print("training_data_path: {}".format(args.nlu_data_dir))
+    print("nli_data_path: {}".format(args.nli_data_dir))
+    print("nlu_data_path: {}".format(args.nlu_data_dir))
 
 def demo(args):
     print_args(args)
     agenda_path = args.agenda_dir
     agenda_names = args.agenda_names
-    training_data_path = args.nlu_data_dir
+    nli_data_dir = args.nli_data_dir
+    nlu_data_dir = args.nlu_data_dir
     
     # Set up trigger detector loader
-    trigger_detector_loader = MyTriggerDetectorLoader(training_data_path, agenda_names)
+    trigger_detector_loader = MyTriggerDetectorLoader(\
+            nli_data_dir, nlu_data_dir, agenda_names)
 
     # Load agendas
     agendas = []
@@ -100,10 +110,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Puppeteer demo")
     parser.add_argument("--agenda_dir", type=str, help='path to agenda directory')
     parser.add_argument("--agenda_names", nargs='+', type=str, help='list of agenda names')
+    parser.add_argument("--nli_data_dir", type=str, help='path to NLI training data directory')
     parser.add_argument("--nlu_data_dir", type=str, help='path to NLU training data directory')
     args = parser.parse_args()
     args.agenda_dir = AGENDA_DIR
     args.agenda_names = AGENDA_NAMES
+    args.nli_data_dir = NLI_DATA_DIR
     args.nlu_data_dir = NLU_DATA_DIR
 
     demo(args)
