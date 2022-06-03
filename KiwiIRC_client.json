@@ -1,0 +1,29 @@
+{
+        "windowTitle": "Web IRC",
+        "startupScreen": "welcome",
+        "kiwiServer": "128.9.36.31",
+        "restricted": false,
+        "theme": "default",
+        "themes": [
+                { "name": "Default", "url": "static/themes/default" },
+                { "name": "Dark", "url": "static/themes/dark" },
+                { "name": "Coffee", "url": "static/themes/coffee" },
+                { "name": "GrayFox", "url": "static/themes/grayfox" },
+                { "name": "Nightswatch", "url": "static/themes/nightswatch" },
+                { "name": "Osprey", "url": "static/themes/osprey" },
+                { "name": "Radioactive", "url": "static/themes/radioactive" },
+                { "name": "Sky", "url": "static/themes/sky" }
+        ],
+        "startupOptions" : {
+                "server": "128.9.36.31",
+                "port": 6697,
+                "channel": "#user-study",
+                "nick": "user_?",
+                "greetingText": "Hello! Welcome to IRC CHat!",
+                "buttonText": "Connect",
+                "tls":true,
+                "autoConnect": false,
+                "infoBackground": "",
+                "infoContent": "<h3>Welcome to your Kiwi IRC page!</h3><p>Now to configure it.</p><p>You can modify this page via the /etc/kiwiirc/client.json file.<br />Add your IRC network details to /etc/kiwiirc/config.conf</p><p>Have a quick read through the config file - there are plenty of comments explaining each feature.</p>"
+        }
+}
