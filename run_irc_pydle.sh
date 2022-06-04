@@ -1,4 +1,4 @@
-export SERVER=10.101.110.39
+export SERVER=128.9.36.31
 export PORT=6697
 export NUM_BOTS=3
 export AGENDA_DIR=puppeteer-control

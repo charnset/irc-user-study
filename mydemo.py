@@ -5,8 +5,8 @@ import numpy as np
 from puppeteer import Agenda, Extractions, MessageObservation, Puppeteer
 from puppeteer.trigger_detectors.loader import MyTriggerDetectorLoader
 
-#AGENDA_NAMES = ["get_shipment", "get_payment", "get_website"]
-AGENDA_NAMES = ["get_website"]
+AGENDA_NAMES = ["get_shipment", "get_payment", "get_website"]
+#AGENDA_NAMES = ["get_shipment", "get_payment"]
 DIR = "../ppt-control/"
 AGENDA_DIR = DIR + "agendas"
 NLI_DATA_DIR = DIR + "nli_premises"
@@ -23,16 +23,6 @@ class TestConversation:
     def say(self, text):
         print("-"*40)
         print("You said: %s" % text)
-
-        '''
-        msg = []
-        msg.append(MessageObservation(text))
-        simple_sentences = get_simple_sentences(text)
-        # print(simple_sentences)
-        for sent in simple_sentences:
-            msg.append(MessageObservation(sent))
-        actions, extractions = self._puppeteer.react(msg, self._extractions)
-        '''
 
         actions, extractions = self._puppeteer.react([MessageObservation(text)], self._extractions)
 
